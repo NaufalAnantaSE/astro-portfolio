@@ -1,16 +1,28 @@
 ---
-
+import MainLayout from '../layouts/Layout.astro';
+import Navbar from '../components/navbar.tsx';
+import Hero from '../components/hero.tsx';
+import Stacks from '../components/stacks.tsx';
+import LogoAnimation from '../components/logoAnimation.tsx';
+import Portfolio from '../components/portfolio.tsx';
+import Contact from '../components/contact.tsx';
+import Footer from '../components/footer.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout 
+  title="Naufal Ananta | Full-Stack Web Developer & Software Engineer Purwokerto" 
+  description="Naufal Ananta — Full-Stack Web Developer & Software Engineer Purwokerto. Spesialis teknologi web modern. Lihat proyek unggulan dalam pengembangan web, aplikasi, dan sistem informasi." 
+>
+
+  <Navbar client:load />
+
+  <main>
+    <Hero client:visible/>
+    <Stacks/>
+    <LogoAnimation client:visible/>
+    <Portfolio client:visible/>
+    <Contact client:visible/>
+  </main>
+  
+  <Footer />
+</MainLayout>

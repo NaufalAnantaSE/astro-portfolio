@@ -1,0 +1,59 @@
+---
+import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-20 w-full bg-white/5 backdrop-blur-md border-t border-white/10 text-white py-10 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        
+        <p class="text-sm text-white/50">
+            © {year} Naufal Ananta. All rights reserved.
+        </p>
+
+        <div class="flex space-x-4">
+            <a
+                href="https://github.com/NaufalAnantaSE"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-purple-400 transition"
+                aria-label="GitHub Profile"
+            >
+                <span class="sr-only">My GitHub</span> 
+                <FiGithub size={20} />
+            </a>
+            <a
+                href="mailto:anantanaufal250@gmail.com"
+                class="hover:text-purple-400 transition"
+                aria-label="Send an Email"
+            >
+                <span class="sr-only">Email Me</span>
+                <FiMail size={20} />
+            </a>
+            <a
+                href="https://www.linkedin.com/in/naufalananta/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-purple-400 transition"
+                aria-label="LinkedIn Profile"
+            >
+                <span class="sr-only">My LinkedIn</span>
+                <FiLinkedin size={20} />
+            </a>
+        </div>
+    </div>
+</footer>
+
+<style is:global>
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+</style>
