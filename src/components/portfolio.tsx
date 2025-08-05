@@ -10,7 +10,7 @@ const projects = [
     title: "Rebuild E-commerce Apps",
     alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
     description: "A Flutter-based e-commerce application with user login system, interactive page navigation, and API integration.",
-    image: "/naufal-ananta-ekomers.jpg",
+    image: "/naufal-ananta-ekomers.png",
   },
   {
     id: 2,

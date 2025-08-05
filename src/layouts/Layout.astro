@@ -22,7 +22,38 @@ const { title, description, image = "/favicon.ico" } = Astro.props;
 		/>
 		<meta name="author" content="Naufal Ananta" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="canonical" href="https://naufalananta.dnn.web.id/" />
 		<meta name="generator" content={Astro.generator} />
+		<!-- Open Graph -->
+		<meta
+			property="og:title"
+			content="Naufal Ananta | Full-Stack Web Developer"
+		/>
+		<meta
+			property="og:description"
+			content="Full-Stack Web Developer Purwokerto. Cek project dan layanan terbaik dari Naufal Ananta."
+		/>
+		<meta property="og:url" content="https://naufalananta.dnn.web.id/" />
+		<meta property="og:type" content="website" />
+		<meta
+			property="og:image"
+			content="https://naufalananta.dnn.web.id/og-cover.png"
+		/>
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta
+			name="twitter:title"
+			content="Naufal Ananta | Full-Stack Web Developer"
+		/>
+		<meta
+			name="twitter:description"
+			content="Full-Stack Web Developer Purwokerto. Cek project dan layanan terbaik dari Naufal Ananta."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://naufalananta.dnn.web.id/og-cover.png"
+		/>
 
 		<SEO
 			title={title}
