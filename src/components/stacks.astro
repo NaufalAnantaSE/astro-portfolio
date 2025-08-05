@@ -1,0 +1,54 @@
+---
+import { FaReact } from "react-icons/fa";
+import { IoLogoNodejs } from "react-icons/io";
+import { SiTypescript, SiMongodb, SiNestjs, SiAstro } from "react-icons/si";
+import { TbBrandNextjs } from "react-icons/tb";
+
+const stackItems = [
+    { id: 1, name: "React", icon: FaReact, color: "#61DAFB" },
+    { id: 2, name: "Node.js", icon: IoLogoNodejs, color: "#339933" },
+    { id: 3, name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
+    { id: 4, name: "MongoDB", icon: SiMongodb, color: "#47A248" },
+    { id: 5, name: "Next JS", icon: TbBrandNextjs, color: "#000000" },
+    { id: 6, name: "Nest JS", icon: SiNestjs, color: "#E0234E" },
+    { id: 7, name: "Astro JS", icon: SiAstro, color: "#BC52EE" },
+];
+---
+
+<section
+    id="stack"
+    class="py-16 glass"
+    aria-label="Teknologi yang digunakan Naufal Ananta Fullstack Developer Purwokerto"
+>
+    <div class="max-w-[1200px] mx-auto px-4 text-center">
+        <h2 class="text-5xl text-gray-200 font-bold mb-5">
+            Tech Stack Naufal Ananta
+        </h2>
+        <p class="text-gray-400 mb-12 max-w-2xl mx-auto text-base">
+            Berikut adalah teknologi dan framework utama yang saya gunakan dalam
+            membangun aplikasi web dan sistem informasi sebagai Fullstack
+            Developer dari Purwokerto.
+        </p>
+
+        <div
+            class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4"
+        >
+            {
+                stackItems.map((item) => (
+                    <div class="flex items-center justify-center flex-col rounded-xl p-4 hover:bg-white/5 transition">
+                        <div class="mb-4 bg-white/10 p-6 rounded-xl">
+                            <item.icon
+                                className="w-16 h-16 md:w-20 md:h-20"
+                                style={{ color: item.color }}
+                                aria-hidden="true"
+                            />
+                        </div>
+                        <p class="mt-4 text-white font-medium text-lg">
+                            {item.name}
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
