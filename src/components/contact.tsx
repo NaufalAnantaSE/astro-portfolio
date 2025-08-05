@@ -72,6 +72,7 @@ export const ContactReact = () => {
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.3952516571707!2d109.2334484!3d-7.4385988999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e655dd56f8cd141%3A0x3ce1ba4461993ce3!2sJl.%20Kamper%20Raya%20No.223A%2C%20Bojong%2C%20Tanjung%2C%20Kec.%20Purwokerto%20Sel.%2C%20Kabupaten%20Banyumas%2C%20Jawa%20Tengah%2053144!5e0!3m2!1sid!2sid!4v1714387262321!5m2!1sid!2sid"
                         width="100%"
                         height="100%"
+                        title="Naufal Ananta - Fullstack Developer Purwokerto"
                         style={{ border: 0 }}
                         allowFullScreen
                         loading="lazy"
