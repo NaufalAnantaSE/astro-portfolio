@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useMotionTemplate, useMotionValue, motion, animate } from 'framer-motion';
 
-// --- PERUBAHAN 1: Tambahkan properti githubUrl & websiteUrl di data projects ---
 const projects = [
   {
     id: 1,
@@ -12,7 +11,7 @@ const projects = [
     alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
     description: "A Flutter-based e-commerce application with user login system, interactive page navigation, and API integration.",
     image: "/naufal-ananta-ekomers.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/tubes-rebuilt-ecommerse-app", // Contoh URL
+    githubUrl: "https://github.com/NaufalAnantaSE/tubes-rebuilt-ecommerse-app", 
   },
   {
     id: 2,
@@ -21,7 +20,7 @@ const projects = [
     alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
     description: "A PHP-based information system for managing products, stock, and sales transactions at Meranti Jaya building store. Features include product catalog, shopping cart, user management, and sales reporting.",
     image: "/naufal-ananta-merantijaya.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/Merantijaya", // Contoh URL
+    githubUrl: "https://github.com/NaufalAnantaSE/Merantijaya", 
   },
   {
     id: 3,
@@ -31,7 +30,7 @@ const projects = [
     description: "A PHP native web-based system designed for managing household waste exchange transactions in Salem Village. The system allows waste bank administrators to record deposits, track user balances, and generate reports. It aims to simplify the waste collection process and provide transparent balance tracking for residents who exchange recyclable waste for monetary value or goods.",
     image: "naufal-ananta-banksampah.png",
     githubUrl: "https://github.com/NaufalAnantaSE/bank-sampah",
-    websiteUrl: "https://bssalem.com" // Contoh URL
+    websiteUrl: "https://bssalem.com" 
   },
   {
     id: 4,
@@ -40,8 +39,8 @@ const projects = [
     alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
     description: "a portfolio similar to this build using nextjs",
     image: "naufal-ananta-portfolio.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/portofolio", // Contoh URL
-    websiteUrl: "https://naufal.dnn.web.id" // Contoh URL
+    githubUrl: "https://github.com/NaufalAnantaSE/portofolio", 
+    websiteUrl: "https://naufal.dnn.web.id" 
   },
   
   {
@@ -51,8 +50,18 @@ const projects = [
     alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
     description: "Auth Api build with nest.js and mongoDB as database and using jwt token or passport for authentication",
     image: "naufal-ananta-api-auth-docs.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/portofolio", // Contoh URL
-    websiteUrl: "https://nest-auth-api.dnn.web.id/api-docs" // Contoh URL
+    githubUrl: "https://github.com/NaufalAnantaSE/nest-passport-auth", 
+    websiteUrl: "https://nest-auth-api.dnn.web.id/api-docs" 
+  },
+  {
+    id: 6,
+    year: 2025,
+    title: "Nest.js Project Management System with MongoDB Integration",
+    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
+    description: "Provides a JWT authentication system using the RSA256 algorithm, user management with role-based access control, and a project management feature with an owner–member system. Integrated with MongoDB for data storage and equipped with interactive API documentation using Swagger UI. Key features include user registration/login, CRUD operations for projects, adding members to projects, and a guard system to protect endpoints based on project ownership.",
+    image: "naufal-ananta-api-task-manager-docs.png",
+    githubUrl: "https://github.com/NaufalAnantaSE/nest-task-manager-demo", 
+    websiteUrl: "https://task-management-api.dnn.web.id/api" 
   },
 
 ];
@@ -108,7 +117,6 @@ const Portfolio = () => {
                     {selectedProject.description}
                   </p>
 
-                  {/* --- PERUBAHAN 2: Tambahkan container untuk tombol link --- */}
                   <div className="flex items-center gap-4 mt-6">
                     {selectedProject.githubUrl && (
                       <a
@@ -137,7 +145,6 @@ const Portfolio = () => {
           ))}
         </div>
 
-        {/* Pastikan key unik untuk memaksa re-render transisi opacity */}
         <motion.img
           key={selectedProject.id}
           src={selectedProject.image}
