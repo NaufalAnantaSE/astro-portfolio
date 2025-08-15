@@ -1,8 +1,73 @@
 "use client"
 
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { fetchPersonalInfo, type PersonalInfo } from '../lib/api';
 
 export const ContactReact = () => {
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadPersonalInfo = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const infoData = await fetchPersonalInfo();
+                setPersonalInfo(infoData);
+            } catch (error) {
+                console.error('Error loading personal info:', error);
+                setError('Failed to load contact information. Please check API connection.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadPersonalInfo();
+    }, []);
+
+    if (loading) {
+        return (
+            <section id="contact" className="overflow-x-clip py-32 text-white max-w-[1200px] mx-auto px-4">
+                <div className="grid lg:grid-cols-2 gap-16">
+                    <div className="space-y-12 animate-pulse">
+                        <div className="h-16 bg-gray-600/30 rounded w-3/4"></div>
+                        <div className="glass p-8 rounded-2xl space-y-8 bg-white/5 backdrop-blur-md border border-white/10">
+                            <div className="h-12 bg-gray-600/20 rounded"></div>
+                            <div className="h-12 bg-gray-600/20 rounded"></div>
+                            <div className="h-12 bg-gray-600/20 rounded"></div>
+                        </div>
+                    </div>
+                    <div className="w-full h-[400px] bg-gray-600/30 rounded-2xl animate-pulse"></div>
+                </div>
+            </section>
+        );
+    }
+
+    if (error || !personalInfo) {
+        return (
+            <section id="contact" className="overflow-x-clip py-32 text-white max-w-[1200px] mx-auto px-4">
+                <div className="text-center">
+                    <div className="text-red-400 mb-4">
+                        <svg className="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <h2 className="text-3xl font-bold mb-4 text-red-400">Contact Information Unavailable</h2>
+                    <p className="text-gray-400 mb-6">
+                        {error || 'Unable to load contact information. Please check API connection.'}
+                    </p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-300"
+                    >
+                        Retry Loading
+                    </button>
+                </div>
+            </section>
+        );
+    }
     return (
         <section id="contact" className="overflow-x-clip py-32 text-white max-w-[1200px] mx-auto px-4">
             <motion.div
@@ -31,32 +96,32 @@ export const ContactReact = () => {
                         <div className="space-y-1">
                             <p className="text-sm text-gray-400">My Phone Number</p>
                             <a
-                                href="https://api.whatsapp.com/send?phone=6285876947166&text=Hi%2C%20There%F0%9F%91%8B"
+                                href={`https://api.whatsapp.com/send?phone=${personalInfo.phone?.replace(/\D/g, '')}&text=Hi%2C%20There%F0%9F%91%8B`}
                                 className="text-xl font-medium hover:text-purple-200 transition"
                             >
-                                +62 858 7694 7166
+                                {personalInfo.phone || '+62 858 7694 7166'}
                             </a>
                         </div>
 
                         <div className="space-y-1">
                             <p className="text-sm text-gray-400">Email Me</p>
                             <a
-                                href="mailto:anantanaufal250@gmail.com"
+                                href={`mailto:${personalInfo.email}`}
                                 className="text-xl font-medium hover:text-gray-200 transition"
                             >
-                                anantanaufal250@gmail.com
+                                {personalInfo.email}
                             </a>
                         </div>
 
                         <div className="space-y-1">
                             <p className="text-sm text-gray-400">My GitHub</p>
                             <a
-                                href="https://github.com/NaufalAnantaSE"
+                                href={personalInfo.socialMedia.github || 'https://github.com/NaufalAnantaSE'}
                                 className="text-xl font-medium hover:text-gray-200 transition"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                NaufalAnantaSE
+                                {personalInfo.socialMedia.github?.replace('https://github.com/', '') || 'NaufalAnantaSE'}
                             </a>
                         </div>
                     </motion.div>

@@ -5,10 +5,11 @@ import "../styles/globals.css";
 export interface Props {
 	title: string;
 	description: string;
-	image?: string;
+	image?: string; // optional, do not default
+	keywords?: string[]; // optional, from API
 }
 
-const { title, description, image = "/favicon.ico" } = Astro.props;
+const { title, description, image, keywords } = Astro.props;
 ---
 
 <!doctype html>
@@ -16,62 +17,44 @@ const { title, description, image = "/favicon.ico" } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<meta
-			name="keywords"
-			content="Naufal Ananta, Fullstack Developer Purwokerto, Web Developer Indonesia, Software Engineer Purwokerto, Portofolio Developer Web"
-		/>
+		{keywords && keywords.length > 0 && (
+			<meta name="keywords" content={keywords.join(', ')} />
+		)}
 		<meta name="author" content="Naufal Ananta" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		{image && (<link rel="icon" type="image/x-icon" href={image} />)}
 		<link rel="canonical" href="https://naufalananta.dnn.web.id/" />
 		<meta name="generator" content={Astro.generator} />
-		<!-- Open Graph -->
-		<meta
-			property="og:title"
-			content="Naufal Ananta | Full-Stack Web Developer"
-		/>
-		<meta
-			property="og:description"
-			content="Full-Stack Web Developer Purwokerto. Cek project dan layanan terbaik dari Naufal Ananta."
-		/>
-		<meta property="og:url" content="https://naufalananta.dnn.web.id/" />
-		<meta property="og:type" content="website" />
-		<meta
-			property="og:image"
-			content="https://naufalananta.dnn.web.id/og-cover.png"
-		/>
+		<!-- Open Graph & Twitter handled by <SEO> below -->
 
-		<!-- Twitter Card -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta
-			name="twitter:title"
-			content="Naufal Ananta | Full-Stack Web Developer"
-		/>
-		<meta
-			name="twitter:description"
-			content="Full-Stack Web Developer Purwokerto. Cek project dan layanan terbaik dari Naufal Ananta."
-		/>
-		<meta
-			name="twitter:image"
-			content="https://naufalananta.dnn.web.id/og-cover.png"
-		/>
-
-		<SEO
-			title={title}
-			description={description}
-			canonical="https://naufalananta.dnn.web.id"
-			openGraph={{
-				basic: {
-					title: title,
-					type: "website",
-					image: image,
-					url: Astro.url.href,
-				},
-			}}
-			twitter={{
-				card: "summary_large_image",
-				creator: "@massnaufall",
-			}}
-		/>
+		{image ? (
+			<SEO
+				title={title}
+				description={description}
+				canonical="https://naufalananta.dnn.web.id"
+				openGraph={{
+					basic: {
+						title: title,
+						type: "website",
+						image: image,
+						url: Astro.url.href,
+					},
+				}}
+				twitter={{
+					card: "summary_large_image",
+					creator: "@massnaufall",
+				}}
+			/>
+		) : (
+			<SEO
+				title={title}
+				description={description}
+				canonical="https://naufalananta.dnn.web.id"
+				twitter={{
+					card: "summary_large_image",
+					creator: "@massnaufall",
+				}}
+			/>
+		)}
 
 		<script type="application/ld+json">
 			{

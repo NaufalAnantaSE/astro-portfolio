@@ -2,79 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { useMotionTemplate, useMotionValue, motion, animate } from 'framer-motion';
-
-const projects = [
-  {
-    id: 1,
-    year: 2024,
-    title: "Rebuild E-commerce Apps",
-    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
-    description: "A Flutter-based e-commerce application with user login system, interactive page navigation, and API integration.",
-    image: "/naufal-ananta-ekomers.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/tubes-rebuilt-ecommerse-app", 
-  },
-  {
-    id: 2,
-    year: 2023,
-    title: "Meranti Jaya Building Store Website (PHP)",
-    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
-    description: "A PHP-based information system for managing products, stock, and sales transactions at Meranti Jaya building store. Features include product catalog, shopping cart, user management, and sales reporting.",
-    image: "/naufal-ananta-merantijaya.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/Merantijaya", 
-  },
-  {
-    id: 3,
-    year: 2023,
-    title: "Salem Village Waste Bank",
-    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
-    description: "A PHP native web-based system designed for managing household waste exchange transactions in Salem Village. The system allows waste bank administrators to record deposits, track user balances, and generate reports. It aims to simplify the waste collection process and provide transparent balance tracking for residents who exchange recyclable waste for monetary value or goods.",
-    image: "naufal-ananta-banksampah.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/bank-sampah",
-    websiteUrl: "https://bssalem.com" 
-  },
-  {
-    id: 4,
-    year: 2025,
-    title: "portfolio Build with next.js",
-    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
-    description: "a portfolio similar to this build using nextjs",
-    image: "naufal-ananta-portfolio.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/portofolio", 
-    websiteUrl: "https://naufal.dnn.web.id" 
-  },
-  
-  {
-    id: 5,
-    year: 2025,
-    title: "API Auth Build with nest.js",
-    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
-    description: "Auth Api build with nest.js and mongoDB as database and using jwt token or passport for authentication",
-    image: "naufal-ananta-api-auth-docs.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/nest-passport-auth", 
-    websiteUrl: "https://nest-auth-api.dnn.web.id/api-docs" 
-  },
-  {
-    id: 6,
-    year: 2025,
-    title: "Nest.js Project Management System with MongoDB Integration",
-    alt: "Naufal Ananta - Fullstack Developer dari Purwokerto",
-    description: "Provides a JWT authentication system using the RSA256 algorithm, user management with role-based access control, and a project management feature with an owner–member system. Integrated with MongoDB for data storage and equipped with interactive API documentation using Swagger UI. Key features include user registration/login, CRUD operations for projects, adding members to projects, and a guard system to protect endpoints based on project ownership.",
-    image: "naufal-ananta-api-task-manager-docs.png",
-    githubUrl: "https://github.com/NaufalAnantaSE/nest-task-manager-demo", 
-    websiteUrl: "https://task-management-api.dnn.web.id/api" 
-  },
-
-];
+import { getPublishedProjects, type Project, getAssetUrl } from '../lib/api';
 
 
 const COLOR_TOP = ["#6a00f4", "#9d00ff", "#b5179e", "#7209b7", "#560bad", "#3a0ca3"];
 
 const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(projects[0]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const color = useMotionValue(COLOR_TOP[0]);
 
   const background = useMotionTemplate`
-    radial-gradient(100% 60% at 50% 100%, ${color} 0%, #000 100%)`;
+    radial-gradient(100% 60% at 50% 100%, ${color} 0%, #000 100%)`;
 
   useEffect(() => {
     animate(color, COLOR_TOP, {
@@ -85,6 +26,98 @@ const Portfolio = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        // Request all items and disable status filtering (status=all)
+        let result = await getPublishedProjects({ getAll: true, status: 'all' });
+        let items = result.data || [];
+
+        // Fallback: if API indicates more items than returned, refetch with larger limit
+        if ((result as any)?.total && (result as any).total > items.length) {
+          const total = (result as any).total as number;
+          const res2 = await getPublishedProjects({ page: 1, limit: Math.max(total, 100), status: 'all' });
+          items = res2.data || items;
+        }
+
+        setProjects(items);
+        if (items.length > 0) {
+          setSelectedProject(items[0]);
+        }
+      } catch (error) {
+        console.error('Error loading projects:', error);
+        setError('Failed to load projects. Please check API connection.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <motion.section
+        style={{ background }}
+        id="portfolio"
+        className="py-32 text-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="animate-pulse">
+            <h2 className="text-6xl font-bold mb-10">
+              Selected <span className="text-purple-400">Project</span>
+            </h2>
+            <div className="grid lg:grid-cols-2 gap-12">
+              <div className="space-y-8">
+                <div className="h-8 bg-gray-600/30 rounded w-3/4"></div>
+                <div className="h-8 bg-gray-600/30 rounded w-2/3"></div>
+                <div className="h-8 bg-gray-600/30 rounded w-1/2"></div>
+              </div>
+              <div className="h-64 bg-gray-600/30 rounded-xl"></div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+    );
+  }
+
+  if (error || projects.length === 0) {
+    return (
+      <motion.section
+        style={{ background }}
+        id="portfolio"
+        className="py-32 text-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-6xl font-bold mb-10">
+            Selected <span className="text-purple-400">Project</span>
+          </h2>
+          <div className="text-red-400 mb-4">
+            <svg className="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold mb-4 text-red-400">No Projects Found</h3>
+          <p className="text-gray-400 mb-6">
+            {error || 'Unable to load projects. Please check if the API server is running and projects are published.'}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-300"
+          >
+            Retry Loading
+          </button>
+        </div>
+      </motion.section>
+    );
+  }
+
+  if (!selectedProject) {
+    return null;
+  }
+
   return (
     <motion.section
       style={{ background }}
@@ -92,70 +125,117 @@ const Portfolio = () => {
       className="py-32 text-white"
     >
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12">
-        <div>
-          <h2 className="text-6xl font-bold mb-10">
-            Selected <span className="text-purple-400">Project</span>
+        {/* Left: List */}
+        <div className="relative">
+          <h2 className="text-5xl md:text-6xl font-bold mb-8">
+            Selected <span className="bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">Project</span>
           </h2>
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              className="cursor-pointer mb-8 group"
-            >
-              <h3
-                className={`text-3xl font-semibold transition-colors duration-300 ${selectedProject.id === project.id
-                    ? 'text-purple-200'
-                    : 'group-hover:text-purple-400'
-                  }`}
-              >
-                {project.title}
-              </h3>
-              {selectedProject.id === project.id && (
-                <>
-                  <div className="border-b-2 border-purple-200 my-4"></div>
-                  <p className="text-gray-400 transition-all duration-400 ease-in-out">
-                    {selectedProject.description}
-                  </p>
 
-                  <div className="flex items-center gap-4 mt-6">
-                    {selectedProject.githubUrl && (
-                      <a
-                        href={selectedProject.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300 shadow-md"
-                      >
-                        GitHub
-                      </a>
-                    )}
-                    {selectedProject.websiteUrl && (
-                      <a
-                        href={selectedProject.websiteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300 shadow-md"
-                      >
-                        Visit Website
-                      </a>
-                    )}
+          <div role="listbox" aria-label="Projects" className="space-y-3">
+            {projects.map((project) => {
+              const active = selectedProject.id === project.id;
+              return (
+                <motion.button
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  aria-selected={active}
+                  className={`w-full text-left rounded-xl px-4 py-4 transition-colors backdrop-blur border ${
+                    active
+                      ? 'border-purple-400/40 bg-white/10'
+                      : 'border-white/10 hover:border-white/20 hover:bg-white/5'
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <h3 className={`text-xl md:text-2xl font-semibold ${active ? 'text-purple-200' : 'text-white'}`}>
+                        {project.title}
+                      </h3>
+                      <div className="mt-1 flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                        <span className="inline-flex items-center rounded-full border border-white/10 px-2 py-0.5">
+                          {project.year}
+                        </span>
+                        {project.status && (
+                          <span className={`inline-flex items-center rounded-full px-2 py-0.5 border ${
+                            project.status === 'published'
+                              ? 'border-emerald-400/30 text-emerald-300'
+                              : 'border-yellow-400/30 text-yellow-300'
+                          }`}>
+                            {project.status === 'published' ? 'Published' : 'Draft'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <span className={`ml-auto text-lg md:text-xl ${active ? 'text-purple-300' : 'text-gray-400'}`} aria-hidden>
+                      ›
+                    </span>
                   </div>
-                </>
-              )}
-            </div>
-          ))}
+                </motion.button>
+              );
+            })}
+          </div>
         </div>
 
-        <motion.img
-          key={selectedProject.id}
-          src={selectedProject.image}
-          alt={selectedProject.alt}
-          className="rounded-xl shadow-lg"
-          width={800}
-          height={450}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        />
+        {/* Right: Detail panel */}
+        <div className="space-y-6">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+            <motion.img
+              key={selectedProject.id}
+              src={getAssetUrl(selectedProject.image)}
+              alt={selectedProject.alt}
+              className="w-full h-auto object-cover"
+              width={800}
+              height={450}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <h3 className="text-2xl md:text-3xl font-bold">{selectedProject.title}</h3>
+              <span className="inline-flex items-center rounded-full border border-white/10 px-2 py-0.5 text-sm text-gray-300">
+                {selectedProject.year}
+              </span>
+              {selectedProject.status && (
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-sm border ${
+                  selectedProject.status === 'published'
+                    ? 'border-emerald-400/30 text-emerald-300'
+                    : 'border-yellow-400/30 text-yellow-300'
+                }`}>
+                  {selectedProject.status === 'published' ? 'Published' : 'Draft'}
+                </span>
+              )}
+            </div>
+
+            <p className="text-gray-300 leading-relaxed">{selectedProject.description}</p>
+
+            <div className="flex flex-wrap items-center gap-4 mt-6">
+              {selectedProject.githubUrl && (
+                <a
+                  href={selectedProject.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-lg bg-purple-600/90 hover:bg-purple-600 text-white font-semibold py-2 px-5 transition-colors shadow-md"
+                >
+                  GitHub
+                </a>
+              )}
+              {selectedProject.websiteUrl && (
+                <a
+                  href={selectedProject.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-5 transition-colors shadow-md"
+                >
+                  Visit Website
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </motion.section>
   );

@@ -7,11 +7,21 @@ import LogoAnimation from '../components/logoAnimation.tsx';
 import Portfolio from '../components/portfolio.tsx';
 import Contact from '../components/contact.tsx';
 import Footer from '../components/footer.astro';
+import { getSEOData } from '../lib/astro-api';
+
+let seoData;
+try {
+  seoData = await getSEOData();
+} catch (e) {
+  seoData = null;
+}
 ---
 
 <MainLayout 
-  title="Naufal Ananta | Full-Stack Web Developer & Software Engineer Purwokerto" 
-  description="Naufal Ananta — Full-Stack Web Developer & Software Engineer Purwokerto. Full-Stack Web Developer Purwokerto. Lihat proyek unggulan dalam pengembangan web, aplikasi, dan sistem informasi." 
+  title={seoData?.siteTitle || ''}
+  description={seoData?.siteDescription || ''}
+  image={seoData?.ogImage || undefined}
+  keywords={seoData?.keywords || []}
 >
 
   <Navbar client:load />
