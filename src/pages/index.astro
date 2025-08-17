@@ -7,6 +7,7 @@ import LogoAnimation from '../components/logoAnimation.tsx';
 import Portfolio from '../components/portfolio.tsx';
 import Contact from '../components/contact.tsx';
 import Footer from '../components/footer.astro';
+import ChatWidget from '../components/ChatWidget.tsx';
 import { getSEOData } from '../lib/astro-api';
 
 let seoData;
@@ -18,7 +19,7 @@ try {
 ---
 
 <MainLayout 
-  title={seoData?.siteTitle || ''}
+  title={seoData?.siteTitle || 'portfolio naufal ananta'}
   description={seoData?.siteDescription || ''}
   image={seoData?.ogImage || undefined}
   keywords={seoData?.keywords || []}
@@ -35,4 +36,7 @@ try {
   </main>
   
   <Footer />
+  
+  <!-- AI Chat Widget -->
+  <ChatWidget client:load />
 </MainLayout>
